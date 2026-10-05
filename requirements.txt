@@ -1,0 +1,10 @@
+numpy<2.0.0
+torch
+torchvision
+scikit-learn
+adversarial-robustness-toolbox
+pandas
+langchain
+chromadb
+pyyaml
+matplotlib

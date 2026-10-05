@@ -1,0 +1,11 @@
+{
+    "STRIDE": [
+        {"threat": "Spoofing", "description": "Attacker impersonates a valid user"}
+    ],
+    "MITRE_ATLAS": [
+        {"technique": "AML.T0001", "name": "Adversarial Examples"}
+    ],
+    "OWASP_LLM_TOP_10": [
+        {"id": "LLM01", "name": "Prompt Injection"}
+    ]
+}

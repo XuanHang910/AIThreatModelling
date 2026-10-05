@@ -1,0 +1,79 @@
+[
+    {
+        "timestamp": "2026-10-05T14:01:18.196160",
+        "module": "member2_evasion",
+        "metric": "accuracy_eps_0.1",
+        "value": 0.8,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.201162",
+        "module": "member2_evasion",
+        "metric": "accuracy_eps_0.2",
+        "value": 0.5,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.209339",
+        "module": "member2_evasion",
+        "metric": "accuracy_eps_0.3",
+        "value": 0.2,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.301141",
+        "module": "member2_defense",
+        "metric": "robust_accuracy",
+        "value": 0.75,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.534026",
+        "module": "member3_llm",
+        "metric": "data_leakage_rate",
+        "value": 0.6666666666666666,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.635045",
+        "module": "member4_poisoning",
+        "metric": "attack_success_rate",
+        "value": 0.85,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.725748",
+        "module": "member4_sanitization",
+        "metric": "malicious_samples_removed",
+        "value": 0.95,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.825794",
+        "module": "member4_privacy",
+        "metric": "mia_accuracy",
+        "value": 0.65,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.917264",
+        "module": "member4_privacy_defense",
+        "metric": "mia_accuracy_after_defense",
+        "value": 0.51,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:19.059037",
+        "module": "member5_guardrails",
+        "metric": "block_rate",
+        "value": 0.6666666666666666,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:19.076167",
+        "module": "member5_guardrails",
+        "metric": "latency_ms",
+        "value": 0.0,
+        "details": {}
+    }
+]
