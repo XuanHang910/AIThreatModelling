@@ -75,5 +75,84 @@
         "metric": "latency_ms",
         "value": 0.0,
         "details": {}
+    },
+    {
+        "timestamp": "2026-10-11T16:01:21.975298",
+        "module": "member5_guardrails",
+        "metric": "block_rate",
+        "value": 0.7586206896551724,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:21.995393",
+        "module": "member5_guardrails",
+        "metric": "latency_ms",
+        "value": 0.017522928570932503,
+        "details": {
+            "note": "\u0111\u1ed9 tr\u1ec5 t\u0103ng th\u00eam m\u1ed7i y\u00eau c\u1ea7u (v\u00e0o + ra)"
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:22.008192",
+        "module": "member5_guardrails",
+        "metric": "leakage_rate_no_guardrail",
+        "value": 0.5172413793103449,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:22.018463",
+        "module": "member5_guardrails",
+        "metric": "leakage_rate_input_filter",
+        "value": 0.1724137931034483,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:22.029029",
+        "module": "member5_guardrails",
+        "metric": "leakage_rate_input_output_filter",
+        "value": 0.0,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:22.044265",
+        "module": "member5_guardrails",
+        "metric": "false_positive_rate",
+        "value": 0.125,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:22.056356",
+        "module": "member5_guardrails",
+        "metric": "block_rate_strict",
+        "value": 0.9310344827586207,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
+    },
+    {
+        "timestamp": "2026-10-11T16:01:22.068115",
+        "module": "member5_guardrails",
+        "metric": "false_positive_rate_strict",
+        "value": 0.25,
+        "details": {
+            "n_attacks": 29,
+            "n_benign": 16
+        }
     }
 ]
