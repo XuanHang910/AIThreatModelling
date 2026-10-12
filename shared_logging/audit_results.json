@@ -1,33 +1,5 @@
 [
     {
-        "timestamp": "2026-10-05T14:01:18.196160",
-        "module": "member2_evasion",
-        "metric": "accuracy_eps_0.1",
-        "value": 0.8,
-        "details": {}
-    },
-    {
-        "timestamp": "2026-10-05T14:01:18.201162",
-        "module": "member2_evasion",
-        "metric": "accuracy_eps_0.2",
-        "value": 0.5,
-        "details": {}
-    },
-    {
-        "timestamp": "2026-10-05T14:01:18.209339",
-        "module": "member2_evasion",
-        "metric": "accuracy_eps_0.3",
-        "value": 0.2,
-        "details": {}
-    },
-    {
-        "timestamp": "2026-10-05T14:01:18.301141",
-        "module": "member2_defense",
-        "metric": "robust_accuracy",
-        "value": 0.75,
-        "details": {}
-    },
-    {
         "timestamp": "2026-10-05T14:01:18.534026",
         "module": "member3_llm",
         "metric": "data_leakage_rate",
@@ -75,5 +47,187 @@
         "metric": "latency_ms",
         "value": 0.0,
         "details": {}
+    },
+    {
+        "timestamp": "2026-10-12T21:01:09.678541",
+        "module": "member2_evasion",
+        "metric": "clean_accuracy",
+        "value": 0.985,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:09.858454",
+        "module": "member2_evasion",
+        "metric": "accuracy_fgsm_eps_0.05",
+        "value": 0.929,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.05
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:10.026832",
+        "module": "member2_evasion",
+        "metric": "accuracy_fgsm_eps_0.1",
+        "value": 0.729,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.1
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:10.202766",
+        "module": "member2_evasion",
+        "metric": "accuracy_fgsm_eps_0.2",
+        "value": 0.164,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.2
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:10.377908",
+        "module": "member2_evasion",
+        "metric": "accuracy_fgsm_eps_0.3",
+        "value": 0.035,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.3
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:12.696388",
+        "module": "member2_evasion",
+        "metric": "accuracy_pgd_eps_0.05",
+        "value": 0.918,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.05
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:14.998429",
+        "module": "member2_evasion",
+        "metric": "accuracy_pgd_eps_0.1",
+        "value": 0.631,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.1
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:17.442794",
+        "module": "member2_evasion",
+        "metric": "accuracy_pgd_eps_0.2",
+        "value": 0.041,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.2
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:01:19.400750",
+        "module": "member2_evasion",
+        "metric": "accuracy_pgd_eps_0.3",
+        "value": 0.007,
+        "details": {
+            "dataset": "MNIST",
+            "max_linf": 0.3
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:52.444118",
+        "module": "member2_defense",
+        "metric": "robust_clean_accuracy",
+        "value": 0.962,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:52.632924",
+        "module": "member2_defense",
+        "metric": "accuracy_fgsm_eps_0.05_after_defense",
+        "value": 0.958,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:52.805701",
+        "module": "member2_defense",
+        "metric": "accuracy_fgsm_eps_0.1_after_defense",
+        "value": 0.941,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:52.981513",
+        "module": "member2_defense",
+        "metric": "accuracy_fgsm_eps_0.2_after_defense",
+        "value": 0.889,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:53.181360",
+        "module": "member2_defense",
+        "metric": "accuracy_fgsm_eps_0.3_after_defense",
+        "value": 0.797,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:55.332037",
+        "module": "member2_defense",
+        "metric": "accuracy_pgd_eps_0.05_after_defense",
+        "value": 0.956,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:57.434664",
+        "module": "member2_defense",
+        "metric": "accuracy_pgd_eps_0.1_after_defense",
+        "value": 0.934,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:04:59.309337",
+        "module": "member2_defense",
+        "metric": "accuracy_pgd_eps_0.2_after_defense",
+        "value": 0.85,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:05:01.228063",
+        "module": "member2_defense",
+        "metric": "accuracy_pgd_eps_0.3_after_defense",
+        "value": 0.686,
+        "details": {
+            "dataset": "MNIST"
+        }
+    },
+    {
+        "timestamp": "2026-10-12T21:05:01.237575",
+        "module": "member2_defense",
+        "metric": "robust_accuracy",
+        "value": 0.686,
+        "details": {
+            "attack": "pgd",
+            "eps": 0.3,
+            "dataset": "MNIST",
+            "before_defense": 0.007
+        }
     }
 ]
