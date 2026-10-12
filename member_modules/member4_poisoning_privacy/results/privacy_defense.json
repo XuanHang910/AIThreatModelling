@@ -1,0 +1,61 @@
+{
+  "dataset": "MNIST",
+  "n_members": 500,
+  "epochs": 60,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "headline_variant": "dp_sigma1.0",
+  "rows": [
+    {
+      "variant": "none",
+      "config": {
+        "defense": "none"
+      },
+      "mia_accuracy": 0.5944,
+      "mia_auc": 0.5720959999999999,
+      "train_acc": 1.0,
+      "test_acc": 0.918399977684021
+    },
+    {
+      "variant": "dropout",
+      "config": {
+        "defense": "dropout",
+        "dropout_p": 0.5,
+        "weight_decay": 0.005
+      },
+      "mia_accuracy": 0.5799999999999998,
+      "mia_auc": 0.5943695999999999,
+      "train_acc": 0.9992000102996826,
+      "test_acc": 0.9421333312988281
+    },
+    {
+      "variant": "dp_sigma1.0",
+      "config": {
+        "defense": "dp",
+        "sigma": 1.0,
+        "clip_norm": 1.0
+      },
+      "mia_accuracy": 0.5172,
+      "mia_auc": 0.5185392,
+      "train_acc": 0.7788000106811523,
+      "test_acc": 0.7341333270072937
+    },
+    {
+      "variant": "dp_sigma2.0",
+      "config": {
+        "defense": "dp",
+        "sigma": 2.0,
+        "clip_norm": 1.0
+      },
+      "mia_accuracy": 0.5256000000000001,
+      "mia_auc": 0.5225232,
+      "train_acc": 0.7675999879837037,
+      "test_acc": 0.7237333297729492
+    }
+  ]
+}

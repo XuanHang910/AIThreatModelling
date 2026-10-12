@@ -1,0 +1,134 @@
+[
+    {
+        "timestamp": "2026-10-05T14:01:18.196160",
+        "module": "member2_evasion",
+        "metric": "accuracy_eps_0.1",
+        "value": 0.8,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.201162",
+        "module": "member2_evasion",
+        "metric": "accuracy_eps_0.2",
+        "value": 0.5,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.209339",
+        "module": "member2_evasion",
+        "metric": "accuracy_eps_0.3",
+        "value": 0.2,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.301141",
+        "module": "member2_defense",
+        "metric": "robust_accuracy",
+        "value": 0.75,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:18.534026",
+        "module": "member3_llm",
+        "metric": "data_leakage_rate",
+        "value": 0.6666666666666666,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:19.059037",
+        "module": "member5_guardrails",
+        "metric": "block_rate",
+        "value": 0.6666666666666666,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-05T14:01:19.076167",
+        "module": "member5_guardrails",
+        "metric": "latency_ms",
+        "value": 0.0,
+        "details": {}
+    },
+    {
+        "timestamp": "2026-10-10T09:01:42.043112",
+        "module": "member4_poisoning",
+        "metric": "attack_success_rate",
+        "value": 0.4173,
+        "details": {
+            "dataset": "MNIST",
+            "mode": "adversarial",
+            "poison_rate": 0.05,
+            "n_poison": 500,
+            "target_class": 7,
+            "clean_accuracy": 0.9739999969800314,
+            "clean_accuracy_baseline": 0.975000003973643,
+            "baseline_asr_no_poison": 0.0031781642076869807
+        }
+    },
+    {
+        "timestamp": "2026-10-10T09:01:42.066460",
+        "module": "member4_poisoning",
+        "metric": "clean_accuracy_drop",
+        "value": 0.001,
+        "details": {
+            "dataset": "MNIST",
+            "mode": "adversarial",
+            "poison_rate": 0.05,
+            "n_poison": 500,
+            "target_class": 7,
+            "clean_accuracy": 0.9739999969800314,
+            "clean_accuracy_baseline": 0.975000003973643,
+            "baseline_asr_no_poison": 0.0031781642076869807
+        }
+    },
+    {
+        "timestamp": "2026-10-10T09:41:27.913450",
+        "module": "member4_sanitization",
+        "metric": "malicious_samples_removed",
+        "value": 0.1193,
+        "details": {
+            "dataset": "MNIST",
+            "mode": "adversarial",
+            "poison_rate": 0.05,
+            "method": "reference",
+            "level": 0.1,
+            "false_positive_rate": 0.09852631578947368,
+            "asr_before": 0.33576368788878125,
+            "asr_after": 0.35053281486034393,
+            "clean_acc_after": 0.9641666809717814
+        }
+    },
+    {
+        "timestamp": "2026-10-10T09:55:07.999200",
+        "module": "member4_privacy",
+        "metric": "mia_accuracy",
+        "value": 0.596,
+        "details": {
+            "dataset": "MNIST",
+            "n_members": 500,
+            "epochs": 60,
+            "mia_auc": 0.5785888,
+            "train_acc": 1.0,
+            "test_acc": 0.9182666540145874
+        }
+    },
+    {
+        "timestamp": "2026-10-10T10:01:20.807505",
+        "module": "member4_privacy_defense",
+        "metric": "mia_accuracy_after_defense",
+        "value": 0.5172,
+        "details": {
+            "dataset": "MNIST",
+            "defense": "dp_sigma1.0",
+            "mia_accuracy_no_defense": 0.5944,
+            "mia_auc": 0.5185392,
+            "test_acc": 0.7341333270072937,
+            "test_acc_no_defense": 0.918399977684021,
+            "all_variants": {
+                "none": 0.5944,
+                "dropout": 0.58,
+                "dp_sigma1.0": 0.5172,
+                "dp_sigma2.0": 0.5256
+            }
+        }
+    }
+]
