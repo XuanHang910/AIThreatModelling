@@ -1,0 +1,93 @@
+{
+  "dataset": "MNIST",
+  "target_class": 7,
+  "n_train": 10000,
+  "n_test": 2000,
+  "epochs": 5,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "pgd_eps": 0.3,
+  "pgd_steps": 10,
+  "headline_rate": 0.05,
+  "headline_mode": "adversarial",
+  "baseline": {
+    "clean_accuracy_mean": 0.9743333260218302,
+    "clean_accuracy_std": 0.0018856219044783918,
+    "asr_mean": 0.003365114990932246,
+    "asr_std": 0.0013738024105781701
+  },
+  "clean_accuracy_drop": 0.004999995231628418,
+  "results": {
+    "plain": [
+      {
+        "poison_rate": 0.005,
+        "n_poison": 50,
+        "clean_accuracy_mean": 0.9725000063578287,
+        "clean_accuracy_std": 0.0004082430346708217,
+        "asr_mean": 0.0026173116833282015,
+        "asr_std": 0.0014720523261937998
+      },
+      {
+        "poison_rate": 0.01,
+        "n_poison": 100,
+        "clean_accuracy_mean": 0.9761666655540466,
+        "clean_accuracy_std": 0.0032744858226206705,
+        "asr_mean": 0.00486072168375055,
+        "asr_std": 0.0016082118704383544
+      },
+      {
+        "poison_rate": 0.02,
+        "n_poison": 200,
+        "clean_accuracy_mean": 0.9741666714350382,
+        "clean_accuracy_std": 0.0028674533408031507,
+        "asr_mean": 0.003925967457083364,
+        "asr_std": 0.002423159638051861
+      },
+      {
+        "poison_rate": 0.05,
+        "n_poison": 500,
+        "clean_accuracy_mean": 0.9768333236376444,
+        "clean_accuracy_std": 0.002094970575210857,
+        "asr_mean": 0.025799214219053585,
+        "asr_std": 0.005281154524783775
+      }
+    ],
+    "adversarial": [
+      {
+        "poison_rate": 0.005,
+        "n_poison": 50,
+        "clean_accuracy_mean": 0.9743333260218302,
+        "clean_accuracy_std": 0.0038801356503225435,
+        "asr_mean": 0.007851934991776943,
+        "asr_std": 0.0023794958216361802
+      },
+      {
+        "poison_rate": 0.01,
+        "n_poison": 100,
+        "clean_accuracy_mean": 0.9761666655540466,
+        "clean_accuracy_std": 0.0012472243116239943,
+        "asr_mean": 0.02617311632881562,
+        "asr_std": 0.01955938168989674
+      },
+      {
+        "poison_rate": 0.02,
+        "n_poison": 200,
+        "clean_accuracy_mean": 0.9753333528836569,
+        "clean_accuracy_std": 0.0016499186646740582,
+        "asr_mean": 0.1344176506002744,
+        "asr_std": 0.04704553822983541
+      },
+      {
+        "poison_rate": 0.05,
+        "n_poison": 500,
+        "clean_accuracy_mean": 0.9693333307902018,
+        "clean_accuracy_std": 0.005906661730785685,
+        "asr_mean": 0.29762572050094604,
+        "asr_std": 0.028474272158123554
+      }
+    ]
+  }
+}

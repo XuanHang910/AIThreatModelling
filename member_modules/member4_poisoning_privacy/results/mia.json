@@ -1,0 +1,50 @@
+{
+  "dataset": "MNIST",
+  "n_members": 500,
+  "epochs": 60,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "mean": {
+    "mia_accuracy": 0.596,
+    "mia_auc": 0.5785888,
+    "train_acc": 1.0,
+    "test_acc": 0.9182666540145874
+  },
+  "per_seed": [
+    {
+      "mia_accuracy": 0.614,
+      "mia_auc": 0.5662320000000001,
+      "train_acc": 1.0,
+      "test_acc": 0.9100000262260437
+    },
+    {
+      "mia_accuracy": 0.604,
+      "mia_auc": 0.569496,
+      "train_acc": 1.0,
+      "test_acc": 0.9106666445732117
+    },
+    {
+      "mia_accuracy": 0.588,
+      "mia_auc": 0.5807199999999999,
+      "train_acc": 1.0,
+      "test_acc": 0.9246666431427002
+    },
+    {
+      "mia_accuracy": 0.602,
+      "mia_auc": 0.612584,
+      "train_acc": 1.0,
+      "test_acc": 0.9179999828338623
+    },
+    {
+      "mia_accuracy": 0.5720000000000001,
+      "mia_auc": 0.563912,
+      "train_acc": 1.0,
+      "test_acc": 0.9279999732971191
+    }
+  ]
+}
