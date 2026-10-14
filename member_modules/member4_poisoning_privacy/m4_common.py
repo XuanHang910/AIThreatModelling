@@ -10,6 +10,12 @@ Nội dung:
 """
 import os
 import sys
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 import json
 import random
 

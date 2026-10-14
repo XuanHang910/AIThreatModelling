@@ -14,6 +14,11 @@ Chỉ số: tỉ lệ mẫu độc bị loại (detection), tỉ lệ mẫu sạ
 import os
 import sys
 
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 import torch

@@ -66,7 +66,8 @@ def load_dataset():
 
     if os.path.exists(TV3_YAML):
         for p in load_yaml(TV3_YAML).get("payloads", []):
-            add("tv3", p)
+            text = p.get("prompt", p) if isinstance(p, dict) else p
+            add("tv3", text)
     mine = load_yaml(TESTSET_YAML)
     for group, items in mine["attacks"].items():
         for p in items:
