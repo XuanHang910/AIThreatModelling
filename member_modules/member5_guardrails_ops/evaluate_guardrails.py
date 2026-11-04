@@ -66,8 +66,8 @@ def load_dataset():
 
     if os.path.exists(TV3_YAML):
         for p in load_yaml(TV3_YAML).get("payloads", []):
-            text = p.get("prompt", p) if isinstance(p, dict) else p
-            add("tv3", text)
+            # TV3 có thể để payload là chuỗi (bản cũ) hoặc dict {id, category, prompt} (bản mới)
+            add("tv3", p["prompt"] if isinstance(p, dict) else p)
     mine = load_yaml(TESTSET_YAML)
     for group, items in mine["attacks"].items():
         for p in items:
