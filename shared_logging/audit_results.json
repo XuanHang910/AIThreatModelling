@@ -598,6 +598,40 @@
         }
     },
     {
+
+        "timestamp": "2026-11-03T11:29:19.901336",
+        "module": "member4_activation_clustering",
+        "metric": "malicious_samples_removed",
+        "value": 0.0,
+        "details": {
+            "dataset": "MNIST",
+            "mode": "adversarial",
+            "poison_rate": 0.05,
+            "n_poison": 500,
+            "asr_before": 0.3138904422521591,
+            "rule": "smaller cluster",
+            "false_positive_rate": 0.02543859649122807,
+            "asr_after": 0.3834361533323924,
+            "detection_rate_oracle_cluster": 0.0,
+            "ari_target_class": 0.12639027858300178
+        }
+    },
+    {
+        "timestamp": "2026-11-03T11:29:19.954756",
+        "module": "member4_spectral_signatures",
+        "metric": "malicious_samples_removed",
+        "value": 0.2647,
+        "details": {
+            "dataset": "MNIST",
+            "mode": "adversarial",
+            "poison_rate": 0.05,
+            "n_poison": 500,
+            "asr_before": 0.3138904422521591,
+            "level": "spectral_0.30",
+            "false_positive_rate": 0.301859649122807,
+            "asr_after": 0.3110861877600352,
+            "auc_target_class": 0.4554006116207951
+=======
         "timestamp": "2026-11-04T19:23:20.196148",
         "module": "member5_guardrails",
         "metric": "block_rate",
@@ -674,6 +708,7 @@
         "details": {
             "n_attacks": 38,
             "n_benign": 16
+
         }
     }
 ]

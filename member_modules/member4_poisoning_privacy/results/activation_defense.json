@@ -1,0 +1,92 @@
+{
+  "dataset": "MNIST",
+  "mode": "adversarial",
+  "poison_rate": 0.05,
+  "n_poison": 500,
+  "target_class": 7,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "baseline": {
+    "asr_before": 0.3138904422521591,
+    "clean_acc_before": 0.9661666552225748
+  },
+  "diagnostics_target_class": {
+    "poison_frac_in_class": 0.4784688995215311,
+    "auc_isolation_forest": 0.3991363914373089,
+    "auc_spectral": 0.4554006116207951,
+    "ari": 0.12639027858300178,
+    "silhouette_target": 0.22001220285892487,
+    "silhouette_median_others": 0.23417075475056967,
+    "poison_frac_cluster_low": 0.2704029305070272,
+    "poison_frac_cluster_high": 0.6391268144093617
+  },
+  "activation_clustering_flagged_classes_per_seed": [
+    [
+      9
+    ],
+    [],
+    [
+      1
+    ]
+  ],
+  "rows": [
+    {
+      "method": "activation_clustering_size",
+      "label": "Activation Clustering (loại cụm nhỏ)",
+      "n_removed": 241.66666666666666,
+      "detection_rate": 0.0,
+      "false_positive_rate": 0.02543859649122807,
+      "precision": 0.0,
+      "asr_after": 0.3834361533323924,
+      "asr_random_control": 0.34006356696287793,
+      "clean_acc_after": 0.9668333331743876
+    },
+    {
+      "method": "activation_clustering_oracle",
+      "label": "Activation Clustering (chọn đúng cụm, cận trên)",
+      "n_removed": 339.6666666666667,
+      "detection_rate": 0.0,
+      "false_positive_rate": 0.03575438596491228,
+      "precision": 0.0,
+      "asr_after": 0.36698447664578754,
+      "asr_random_control": 0.3103383829196294,
+      "clean_acc_after": 0.9594999949137369
+    },
+    {
+      "method": "spectral_0.10",
+      "label": "Spectral Signatures (loại 10%/lớp)",
+      "n_removed": 1000.0,
+      "detection_rate": 0.07133333333333335,
+      "false_positive_rate": 0.10150877192982456,
+      "precision": 0.03566666666666667,
+      "asr_after": 0.40474854906400043,
+      "asr_random_control": 0.35520657896995544,
+      "clean_acc_after": 0.9636666576067606
+    },
+    {
+      "method": "spectral_0.20",
+      "label": "Spectral Signatures (loại 20%/lớp)",
+      "n_removed": 1999.0,
+      "detection_rate": 0.16333333333333333,
+      "false_positive_rate": 0.20182456140350877,
+      "precision": 0.04085376021344005,
+      "asr_after": 0.3105253378550212,
+      "asr_random_control": 0.3983922302722931,
+      "clean_acc_after": 0.9544999996821085
+    },
+    {
+      "method": "spectral_0.30",
+      "label": "Spectral Signatures (loại 30%/lớp)",
+      "n_removed": 3000.0,
+      "detection_rate": 0.26466666666666666,
+      "false_positive_rate": 0.301859649122807,
+      "precision": 0.04411111111111111,
+      "asr_after": 0.3110861877600352,
+      "asr_random_control": 0.3045429090658824,
+      "clean_acc_after": 0.9423333406448364
+    }
+  ]
+}
