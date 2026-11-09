@@ -1,0 +1,92 @@
+{
+  "dataset": "MNIST",
+  "n_test": 100,
+  "seed": 42,
+  "settings": {
+    "pgd_norm": "Linf",
+    "pgd_eps": 0.3,
+    "pgd_eps_step": 0.075,
+    "pgd_max_iter": 20,
+    "cw_norm": "L2",
+    "cw_confidence": 0.0,
+    "cw_learning_rate": 0.01,
+    "cw_initial_const": 1.0,
+    "cw_binary_search_steps": 5,
+    "cw_max_iter": 50,
+    "cw_batch_size": 32
+  },
+  "models": {
+    "clean": {
+      "checkpoint": "evasion_clean_model.pth",
+      "n_test": 100,
+      "n_clean_correct": 95,
+      "clean_accuracy": 0.95,
+      "pgd_linf": {
+        "n_attacked": 95,
+        "n_successful": 95,
+        "attack_success_rate": 1.0,
+        "robust_accuracy": 0.0,
+        "runtime_seconds": 0.21046890000070562,
+        "perturbation": {
+          "mean_l2": 5.769181728363037,
+          "median_l2": 5.792459011077881,
+          "mean_linf": 0.2999999523162842,
+          "max_linf": 0.30000004172325134,
+          "mean_l2_successful": 5.769181728363037,
+          "mean_linf_successful": 0.2999999523162842
+        }
+      },
+      "cw_l2": {
+        "n_attacked": 95,
+        "n_successful": 93,
+        "attack_success_rate": 0.9789473684210527,
+        "robust_accuracy": 0.02,
+        "runtime_seconds": 65.98517800000081,
+        "perturbation": {
+          "mean_l2": 2.3901376724243164,
+          "median_l2": 2.236941337585449,
+          "mean_linf": 0.6687323451042175,
+          "max_linf": 0.9921178817749023,
+          "mean_l2_successful": 2.4415383338928223,
+          "mean_linf_successful": 0.683113694190979
+        }
+      }
+    },
+    "robust": {
+      "checkpoint": "robust_model.pth",
+      "n_test": 100,
+      "n_clean_correct": 95,
+      "clean_accuracy": 0.95,
+      "pgd_linf": {
+        "n_attacked": 95,
+        "n_successful": 22,
+        "attack_success_rate": 0.23157894736842105,
+        "robust_accuracy": 0.73,
+        "runtime_seconds": 0.24008610000055342,
+        "perturbation": {
+          "mean_l2": 6.026777744293213,
+          "median_l2": 6.084376335144043,
+          "mean_linf": 0.2999999523162842,
+          "max_linf": 0.30000004172325134,
+          "mean_l2_successful": 5.715887546539307,
+          "mean_linf_successful": 0.30000007152557373
+        }
+      },
+      "cw_l2": {
+        "n_attacked": 95,
+        "n_successful": 72,
+        "attack_success_rate": 0.7578947368421053,
+        "robust_accuracy": 0.23,
+        "runtime_seconds": 79.90081970000028,
+        "perturbation": {
+          "mean_l2": 2.603142499923706,
+          "median_l2": 2.828665018081665,
+          "mean_linf": 0.6803443431854248,
+          "max_linf": 0.9960784316062927,
+          "mean_l2_successful": 3.434701919555664,
+          "mean_linf_successful": 0.8976764678955078
+        }
+      }
+    }
+  }
+}
