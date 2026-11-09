@@ -598,7 +598,6 @@
         }
     },
     {
-
         "timestamp": "2026-11-03T11:29:19.901336",
         "module": "member4_activation_clustering",
         "metric": "malicious_samples_removed",
@@ -631,8 +630,9 @@
             "false_positive_rate": 0.301859649122807,
             "asr_after": 0.3110861877600352,
             "auc_target_class": 0.4554006116207951
-=======
-        "timestamp": "2026-11-04T19:23:20.196148",
+        }
+    },
+    {
         "module": "member5_guardrails",
         "metric": "block_rate",
         "value": 0.7894736842105263,
@@ -708,7 +708,236 @@
         "details": {
             "n_attacks": 38,
             "n_benign": 16
-
+        }
+    },
+    {
+        "timestamp": "2026-11-09T20:28:39.244775",
+        "module": "member3_cross_testing",
+        "metric": "input_bypass_rate",
+        "value": 0.0,
+        "details": {
+            "summary": {
+                "new_bypass": {
+                    "total": 7,
+                    "completed": 7,
+                    "errors": 0,
+                    "input_block_rate": 1.0,
+                    "input_bypass_rate": 0.0,
+                    "baseline_leak_rate": 0.5714285714285714,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 69.0
+                },
+                "original_observation": {
+                    "total": 12,
+                    "completed": 12,
+                    "errors": 0,
+                    "input_block_rate": 0.8333333333333334,
+                    "input_bypass_rate": 0.16666666666666666,
+                    "baseline_leak_rate": 0.6666666666666666,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 29.2
+                },
+                "benign": {
+                    "total": 16,
+                    "completed": 16,
+                    "errors": 0,
+                    "input_block_rate": 0.0,
+                    "input_bypass_rate": 1.0,
+                    "baseline_leak_rate": 0.1875,
+                    "input_only_leak_rate": 0.1875,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 31.9,
+                    "false_positive_rate": 0.0
+                }
+            },
+            "guardrail_sha256": "d3071bce9d6b626de23cf8cff7209e9d5bd4fa741a863daab142a28ee22a1618",
+            "scope": "7 new probes; FPR from TV5 benign set; dummy RAG"
+        }
+    },
+    {
+        "timestamp": "2026-11-09T20:28:39.244775",
+        "module": "member3_cross_testing",
+        "metric": "block_rate",
+        "value": 1.0,
+        "details": {
+            "summary": {
+                "new_bypass": {
+                    "total": 7,
+                    "completed": 7,
+                    "errors": 0,
+                    "input_block_rate": 1.0,
+                    "input_bypass_rate": 0.0,
+                    "baseline_leak_rate": 0.5714285714285714,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 69.0
+                },
+                "original_observation": {
+                    "total": 12,
+                    "completed": 12,
+                    "errors": 0,
+                    "input_block_rate": 0.8333333333333334,
+                    "input_bypass_rate": 0.16666666666666666,
+                    "baseline_leak_rate": 0.6666666666666666,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 29.2
+                },
+                "benign": {
+                    "total": 16,
+                    "completed": 16,
+                    "errors": 0,
+                    "input_block_rate": 0.0,
+                    "input_bypass_rate": 1.0,
+                    "baseline_leak_rate": 0.1875,
+                    "input_only_leak_rate": 0.1875,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 31.9,
+                    "false_positive_rate": 0.0
+                }
+            },
+            "guardrail_sha256": "d3071bce9d6b626de23cf8cff7209e9d5bd4fa741a863daab142a28ee22a1618",
+            "scope": "7 new probes; FPR from TV5 benign set; dummy RAG"
+        }
+    },
+    {
+        "timestamp": "2026-11-09T20:28:39.266768",
+        "module": "member3_cross_testing",
+        "metric": "input_only_leakage_rate",
+        "value": 0.0,
+        "details": {
+            "summary": {
+                "new_bypass": {
+                    "total": 7,
+                    "completed": 7,
+                    "errors": 0,
+                    "input_block_rate": 1.0,
+                    "input_bypass_rate": 0.0,
+                    "baseline_leak_rate": 0.5714285714285714,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 69.0
+                },
+                "original_observation": {
+                    "total": 12,
+                    "completed": 12,
+                    "errors": 0,
+                    "input_block_rate": 0.8333333333333334,
+                    "input_bypass_rate": 0.16666666666666666,
+                    "baseline_leak_rate": 0.6666666666666666,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 29.2
+                },
+                "benign": {
+                    "total": 16,
+                    "completed": 16,
+                    "errors": 0,
+                    "input_block_rate": 0.0,
+                    "input_bypass_rate": 1.0,
+                    "baseline_leak_rate": 0.1875,
+                    "input_only_leak_rate": 0.1875,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 31.9,
+                    "false_positive_rate": 0.0
+                }
+            },
+            "guardrail_sha256": "d3071bce9d6b626de23cf8cff7209e9d5bd4fa741a863daab142a28ee22a1618",
+            "scope": "7 new probes; FPR from TV5 benign set; dummy RAG"
+        }
+    },
+    {
+        "timestamp": "2026-11-09T20:28:39.284647",
+        "module": "member3_cross_testing",
+        "metric": "full_pipeline_leakage_rate",
+        "value": 0.0,
+        "details": {
+            "summary": {
+                "new_bypass": {
+                    "total": 7,
+                    "completed": 7,
+                    "errors": 0,
+                    "input_block_rate": 1.0,
+                    "input_bypass_rate": 0.0,
+                    "baseline_leak_rate": 0.5714285714285714,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 69.0
+                },
+                "original_observation": {
+                    "total": 12,
+                    "completed": 12,
+                    "errors": 0,
+                    "input_block_rate": 0.8333333333333334,
+                    "input_bypass_rate": 0.16666666666666666,
+                    "baseline_leak_rate": 0.6666666666666666,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 29.2
+                },
+                "benign": {
+                    "total": 16,
+                    "completed": 16,
+                    "errors": 0,
+                    "input_block_rate": 0.0,
+                    "input_bypass_rate": 1.0,
+                    "baseline_leak_rate": 0.1875,
+                    "input_only_leak_rate": 0.1875,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 31.9,
+                    "false_positive_rate": 0.0
+                }
+            },
+            "guardrail_sha256": "d3071bce9d6b626de23cf8cff7209e9d5bd4fa741a863daab142a28ee22a1618",
+            "scope": "7 new probes; FPR from TV5 benign set; dummy RAG"
+        }
+    },
+    {
+        "timestamp": "2026-11-09T20:28:39.307129",
+        "module": "member3_cross_testing",
+        "metric": "false_positive_rate",
+        "value": 0.0,
+        "details": {
+            "summary": {
+                "new_bypass": {
+                    "total": 7,
+                    "completed": 7,
+                    "errors": 0,
+                    "input_block_rate": 1.0,
+                    "input_bypass_rate": 0.0,
+                    "baseline_leak_rate": 0.5714285714285714,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 69.0
+                },
+                "original_observation": {
+                    "total": 12,
+                    "completed": 12,
+                    "errors": 0,
+                    "input_block_rate": 0.8333333333333334,
+                    "input_bypass_rate": 0.16666666666666666,
+                    "baseline_leak_rate": 0.6666666666666666,
+                    "input_only_leak_rate": 0.0,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 29.2
+                },
+                "benign": {
+                    "total": 16,
+                    "completed": 16,
+                    "errors": 0,
+                    "input_block_rate": 0.0,
+                    "input_bypass_rate": 1.0,
+                    "baseline_leak_rate": 0.1875,
+                    "input_only_leak_rate": 0.1875,
+                    "full_pipeline_leak_rate": 0.0,
+                    "median_input_check_us": 31.9,
+                    "false_positive_rate": 0.0
+                }
+            },
+            "guardrail_sha256": "d3071bce9d6b626de23cf8cff7209e9d5bd4fa741a863daab142a28ee22a1618",
+            "scope": "7 new probes; FPR from TV5 benign set; dummy RAG"
         }
     }
 ]

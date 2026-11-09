@@ -66,10 +66,17 @@ def aggregate_and_report():
     data_leakage_rate = latest_metrics.get(("member3_llm", "data_leakage_rate"), {}).get("value")
     tv3_details = latest_metrics.get(("member3_llm", "data_leakage_rate"), {}).get("details", {})
 
+    # TV3 Cross-Testing
+    cross_bypass = latest_metrics.get(("member3_cross_testing", "input_bypass_rate"), {}).get("value")
+    cross_block = latest_metrics.get(("member3_cross_testing", "block_rate"), {}).get("value")
+    cross_leak = latest_metrics.get(("member3_cross_testing", "full_pipeline_leakage_rate"), {}).get("value")
+    cross_fp = latest_metrics.get(("member3_cross_testing", "false_positive_rate"), {}).get("value")
+
     # TV4: Data Poisoning & Privacy
     asr = latest_metrics.get(("member4_poisoning", "attack_success_rate"), {}).get("value")
     clean_acc_drop = latest_metrics.get(("member4_poisoning", "clean_accuracy_drop"), {}).get("value")
     sanitization_rate = latest_metrics.get(("member4_sanitization", "malicious_samples_removed"), {}).get("value")
+    spectral_rate = latest_metrics.get(("member4_spectral_signatures", "malicious_samples_removed"), {}).get("value")
     mia_acc = latest_metrics.get(("member4_privacy", "mia_accuracy"), {}).get("value")
     mia_acc_defended = latest_metrics.get(("member4_privacy_defense", "mia_accuracy_after_defense"), {}).get("value")
 
@@ -121,7 +128,8 @@ Hệ thống được đối soát theo ma trận phối hợp chuẩn công ngh
 |---|---|---|---|---|:---:|
 | **TV2: Adversarial Evasion** | Tấn công đối kháng FGSM / PGD (ε=0.3) | Clean Acc: **{format_pct(clean_acc)}**<br>PGD Acc: **{format_pct(pgd_03)}** | Adversarial Training (PGD ε=0.3, ratio=0.5) | Clean Acc: **{format_pct(robust_clean_acc)}**<br>PGD Acc: **{format_pct(robust_pgd_03)}** | Đạt yêu cầu |
 | **TV3: LLM Security** | Prompt Injection, Instruction Override & Data Extraction | Leakage Rate: **{format_pct(data_leakage_rate)}** ({tv3_details.get('leak_count', '8')}/{tv3_details.get('completed_tests', '12')} tests) | Kiểm soát phân quyền & làm sạch RAG query | Cần áp dụng Guardrails (TV5) | Phát hiện lỗ hổng nghiêm trọng |
-| **TV4: Poisoning & Privacy** | Clean-label Backdoor & Membership Inference (MIA) | Backdoor ASR: **{format_pct(asr)}**<br>MIA Accuracy: **{format_pct(mia_acc)}** | Isolation Forest Sanitization & Differential Privacy (DP-SGD) | Lọc mẫu độc: **{format_pct(sanitization_rate)}**<br>MIA sau DP: **{format_pct(mia_acc_defended)}** | Đạt yêu cầu |
+| **TV3 ⚔️ TV5: Cross-Testing** | 7 Advanced Bypass Probes (Base64, Zero-width, DAN roleplay) | Input Bypass: **{format_pct(cross_bypass)}** | Guardrail v2 (Normalization + Redaction) | Input Block: **{format_pct(cross_block)}**<br>Final Leak: **{format_pct(cross_leak)}**<br>FPR: **{format_pct(cross_fp)}** | Khắc phục hoàn toàn |
+| **TV4: Poisoning & Privacy** | Clean-label Backdoor & Membership Inference (MIA) | Backdoor ASR: **{format_pct(asr)}**<br>MIA Accuracy: **{format_pct(mia_acc)}** | Spectral Signatures & Differential Privacy (DP-SGD) | Lọc mẫu độc (Spectral): **{format_pct(spectral_rate)}**<br>MIA sau DP: **{format_pct(mia_acc_defended)}** | Đạt yêu cầu |
 | **TV5: Runtime Guardrails** | Khai thác trích xuất bí mật qua Prompt độc hại | Leakage Rate (No Guard): **{format_pct(guard_leak_none)}** | Dual Guardrail Proxy (Input Regex + Output Redaction) | Block Rate: **{format_pct(guard_block_rate)}**<br>Leakage Rate: **{format_pct(guard_leak_full)}**<br>Độ trễ tăng thêm: **{guard_latency:.4f} ms** | Đạt yêu cầu xuất sắc |
 
 ---

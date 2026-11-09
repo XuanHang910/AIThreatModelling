@@ -1,5 +1,5 @@
 # Báo cáo Kiểm toán và Đánh giá An toàn Hệ thống AI (Tổng hợp Toàn diện)
-> **Thời gian xuất báo cáo:** 2026-10-14 16:25:09  
+> **Thời gian xuất báo cáo:** 2026-11-09 20:34:26  
 > **Chủ trì tổng hợp:** Thành viên 1 - Trưởng nhóm & Kiến trúc sư An toàn AI (Lead AI Security Architect)  
 > **Mục tiêu hệ thống:** Phân loại ảnh / Bảng (`target_systems/classifier`) & Dịch vụ RAG Doanh nghiệp (`target_systems/rag_service`).
 
@@ -27,8 +27,9 @@ Hệ thống được đối soát theo ma trận phối hợp chuẩn công ngh
 |---|---|---|---|---|:---:|
 | **TV2: Adversarial Evasion** | Tấn công đối kháng FGSM / PGD (ε=0.3) | Clean Acc: **98.50%**<br>PGD Acc: **0.70%** | Adversarial Training (PGD ε=0.3, ratio=0.5) | Clean Acc: **96.20%**<br>PGD Acc: **68.60%** | Đạt yêu cầu |
 | **TV3: LLM Security** | Prompt Injection, Instruction Override & Data Extraction | Leakage Rate: **66.67%** (8/12 tests) | Kiểm soát phân quyền & làm sạch RAG query | Cần áp dụng Guardrails (TV5) | Phát hiện lỗ hổng nghiêm trọng |
-| **TV4: Poisoning & Privacy** | Clean-label Backdoor & Membership Inference (MIA) | Backdoor ASR: **85.00%**<br>MIA Accuracy: **65.00%** | Isolation Forest Sanitization & Differential Privacy (DP-SGD) | Lọc mẫu độc: **11.93%**<br>MIA sau DP: **51.00%** | Đạt yêu cầu |
-| **TV5: Runtime Guardrails** | Khai thác trích xuất bí mật qua Prompt độc hại | Leakage Rate (No Guard): **55.26%** | Dual Guardrail Proxy (Input Regex + Output Redaction) | Block Rate: **76.32%**<br>Leakage Rate: **0.00%**<br>Độ trễ tăng thêm: **0.0199 ms** | Đạt yêu cầu xuất sắc |
+| **TV3 ⚔️ TV5: Cross-Testing** | 7 Advanced Bypass Probes (Base64, Zero-width, DAN roleplay) | Input Bypass: **0.00%** | Guardrail v2 (Normalization + Redaction) | Input Block: **100.00%**<br>Final Leak: **0.00%**<br>FPR: **0.00%** | Khắc phục hoàn toàn |
+| **TV4: Poisoning & Privacy** | Clean-label Backdoor & Membership Inference (MIA) | Backdoor ASR: **85.00%**<br>MIA Accuracy: **65.00%** | Spectral Signatures & Differential Privacy (DP-SGD) | Lọc mẫu độc (Spectral): **26.47%**<br>MIA sau DP: **51.00%** | Đạt yêu cầu |
+| **TV5: Runtime Guardrails** | Khai thác trích xuất bí mật qua Prompt độc hại | Leakage Rate (No Guard): **55.26%** | Dual Guardrail Proxy (Input Regex + Output Redaction) | Block Rate: **78.95%**<br>Leakage Rate: **0.00%**<br>Độ trễ tăng thêm: **0.0360 ms** | Đạt yêu cầu xuất sắc |
 
 ---
 
@@ -50,9 +51,9 @@ Hệ thống được đối soát theo ma trận phối hợp chuẩn công ngh
 ### 3.4. Chuyên đề 5 - Giám sát Thời gian thực & Guardrails (Ops Security)
 - **Kiến trúc:** Lớp proxy kiểm soát 2 tầng (Input Validation + Output Redaction).
 - **Đánh giá hiệu năng:**
-  - Tỷ lệ chặn tấn công đầu vào (Block Rate): **76.32%** (chế độ tiêu chuẩn) và **89.47%** (chế độ nghiêm ngặt).
+  - Tỷ lệ chặn tấn công đầu vào (Block Rate): **78.95%** (chế độ tiêu chuẩn) và **92.11%** (chế độ nghiêm ngặt).
   - Tỷ lệ rò rỉ thông tin qua kênh đầu ra giảm từ **55.26%** về tuyệt đối **0.00%**.
-  - Độ trễ gia tăng (Latency Overhead) cực thấp chỉ **0.0199 ms/request**, hoàn toàn đáp ứng SLA sản xuất của doanh nghiệp.
+  - Độ trễ gia tăng (Latency Overhead) cực thấp chỉ **0.0360 ms/request**, hoàn toàn đáp ứng SLA sản xuất của doanh nghiệp.
 
 ---
 
