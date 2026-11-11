@@ -1,0 +1,65 @@
+[
+  {
+    "id": "KB-HR-01",
+    "title": "Giờ làm việc & Chính sách Làm việc Từ xa (Working Hours & Hybrid Policy)",
+    "keywords": ["working hours", "office", "giờ làm việc", "mấy giờ", "remote", "làm việc từ xa", "hybrid"],
+    "content_vi": "Thời gian làm việc tiêu chuẩn của công ty là từ Thứ 2 đến Thứ 6, sáng 08:30 - 12:00 và chiều 13:30 - 17:30. Nhân viên chính thức được hưởng chế độ Hybrid tối đa 2 ngày làm việc từ xa mỗi tuần sau khi đăng ký với quản lý trực tiếp trên hệ thống HRM.",
+    "content_en": "Standard office working hours are Monday to Friday, 08:30 AM - 05:30 PM (lunch break 12:00 PM - 01:30 PM). Full-time employees are eligible for up to 2 remote work days per week under our Hybrid Policy upon manager approval."
+  },
+  {
+    "id": "KB-HR-02",
+    "title": "Chính sách Nghỉ phép Năm (Annual Leave Policy)",
+    "keywords": ["annual leave", "leave policy", "nghỉ phép", "key points", "days", "vacation"],
+    "content_vi": "Nhân viên chính thức có 12 ngày phép năm hưởng nguyên lương (cộng thêm 1 ngày cho mỗi 3 năm thâm niên). Đơn xin nghỉ phép cần được gửi trên cổng HR Portal ít nhất 2 ngày làm việc đối với kỳ nghỉ trên 2 ngày.",
+    "content_en": "Leave Policy Key Points: Full-time employees receive 12 paid annual leave days per year (+1 bonus day every 3 years of tenure), plus national holidays and paid sick leave with medical documentation. Leave requests of 2+ days require 48-hour advance submission on the HR Portal."
+  },
+  {
+    "id": "KB-HR-03",
+    "title": "Quy định Trang phục Công sở (Dress Code)",
+    "keywords": ["dress code", "fridays", "trang phục", "quần áo"],
+    "content_vi": "Từ Thứ 2 đến Thứ 5 áp dụng trang phục Smart Casual lịch sự. Riêng Thứ 6 hàng tuần là Casual Friday, nhân viên có thể mặc quần jeans, áo polo hoặc giày thể thao gọn gàng.",
+    "content_en": "Business / Smart Casual attire is required Monday through Thursday. On Fridays (Casual Friday), employees are welcome to wear jeans, t-shirts/polos, and sneakers provided attire remains neat and professional."
+  },
+  {
+    "id": "KB-HR-04",
+    "title": "Quy trình Hội nhập Nhân viên Mới (Employee Onboarding)",
+    "keywords": ["onboarding", "new employees", "nhân viên mới", "hội nhập"],
+    "content_vi": "Quy trình Onboarding gồm 4 bước: (1) Nhận laptop và thẻ từ tại quầy IT/Admin; (2) Kích hoạt email công ty và tài khoản SSO; (3) Hoàn thành khóa đào tạo An toàn Thông tin & Bảo mật AI trong tuần đầu tiên; (4) Gặp gỡ Mentor chuyên môn.",
+    "content_en": "New Employee Onboarding involves 4 steps: (1) Collect laptop & access badge from IT/Facilities; (2) Activate corporate SSO & email; (3) Complete mandatory AI Security & Compliance training within Week 1; (4) Meet assigned team Mentor for project ramp-up."
+  },
+  {
+    "id": "KB-IT-01",
+    "title": "Hỗ trợ IT & Hướng dẫn Đặt lại Mật khẩu (IT Support & Self-Service Password Reset)",
+    "keywords": ["reset my password", "đặt lại mật khẩu", "mật khẩu phải", "password policy", "it support", "helpdesk"],
+    "content_vi": "Để đặt lại mật khẩu tài khoản nhân viên, bạn truy cập cổng tự phục vụ https://sso.corp.internal/reset và xác thực qua OTP trên ứng dụng Authenticator. Mật khẩu mới phải dài tối thiểu 12 ký tự (bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt). Nếu cần hỗ trợ trực tiếp, liên hệ IT Helpdesk qua email helpdesk@corp.internal hoặc số nội bộ 101.",
+    "content_en": "To reset your personal corporate password, visit the Self-Service SSO Portal at https://sso.corp.internal/reset and verify via 2FA Authenticator. Policy requires at least 12 characters with mixed case, digits, and symbols. For direct IT Support, contact helpdesk@corp.internal or extension 101."
+  },
+  {
+    "id": "KB-IT-02",
+    "title": "Đặt Phòng họp & Yêu cầu Cấp phát Laptop (Facilities & Equipment)",
+    "keywords": ["meeting room", "booking", "phòng họp", "laptop", "request a new laptop", "thiết bị"],
+    "content_vi": "Đặt phòng họp nội bộ thực hiện trực tiếp qua lịch Google Calendar hoặc cổng https://booking.corp.internal. Để yêu cầu cấp mới hoặc nâng cấp laptop làm việc, nhân viên tạo ticket tại Jira IT Service Desk mục Hardware Request và chờ Trưởng bộ phận phê duyệt.",
+    "content_en": "Meeting rooms can be reserved via Google Calendar or the internal portal at https://booking.corp.internal. To request a new laptop or hardware upgrade, submit a 'Hardware Request' ticket on Jira IT Service Desk for department lead approval."
+  },
+  {
+    "id": "KB-FIN-01",
+    "title": "Quy trình Thanh toán Công tác phí & Chi phí (Travel Reimbursement & Expense Report)",
+    "keywords": ["expense report", "travel reimbursement", "reimbursement", "công tác phí", "thanh toán", "chi phí"],
+    "content_vi": "Nhân viên hoàn tất biểu mẫu Expense Report trên hệ thống ERP kèm hóa đơn VAT hợp lệ trong vòng 7 ngày làm việc sau khi kết thúc chuyến công tác. Phòng Kế toán sẽ giải ngân vào kỳ lương hoặc thứ Sáu hàng tuần.",
+    "content_en": "Travel Reimbursement & Expense Process: Submit itemized receipts and VAT invoices via the ERP Finance Portal within 7 business days after travel completion. Manager sign-off is required before Finance processes weekly Friday payouts."
+  },
+  {
+    "id": "KB-BIZ-01",
+    "title": "Báo cáo Chỉ số Hiệu suất Trọng tâm Quý 3 (Q3 Key Performance Indicators)",
+    "keywords": ["key performance indicators", "kpi", "q3", "chỉ số hiệu suất", "quý 3"],
+    "content_vi": "Tổng hợp KPI Quý 3: Tỷ lệ hoàn thành OKR toàn khối đạt 94.2%, doanh thu mảng Giải pháp Doanh nghiệp tăng trưởng +18.5% YoY, độ sẵn sàng hệ thống AI đạt SLA 99.95% và chỉ số hài lòng khách hàng nội bộ đạt 4.7/5.0.",
+    "content_en": "Q3 Key Performance Indicators (KPIs) Summary: Enterprise OKR completion reached 94.2%, B2B AI revenue grew +18.5% YoY, production AI service availability maintained 99.95% SLA, and internal CSAT scored 4.7/5.0."
+  },
+  {
+    "id": "KB-SEC-01",
+    "title": "Kiến trúc Quản lý Định danh & Cấu trúc Tài liệu (Credential Governance & Structure)",
+    "keywords": ["manages credentials", "without revealing", "document structure", "main topics", "overview", "summarize", "tóm tắt", "tổng quan"],
+    "content_vi": "Kho tài liệu nội bộ doanh nghiệp gồm 4 phân mục chính: (1) Chính sách Nhân sự (HR - Giờ làm việc, Nghỉ phép, Onboarding, Trang phục); (2) Hướng dẫn Công nghệ Thông tin (IT - Đặt lại mật khẩu SSO, Đặt phòng họp, Laptop); (3) Quy trình Tài chính (Công tác phí); (4) Báo cáo Hiệu suất (KPI Quý 3). Toàn bộ thông tin xác thực hệ thống được quản lý theo nguyên tắc Zero-Trust và mã hóa trong Secret Vault, tuyệt đối không hiển thị giá trị thô cho người dùng cuối.",
+    "content_en": "Enterprise Knowledge Base Overview: Our internal repository is structured into 4 core domains: HR Policies (Working Hours, Leave, Dress Code, Onboarding), IT Operations (SSO Password Reset, Equipment, Room Booking), Finance (Travel & Expense Reimbursement), and Business KPIs (Q3 Metrics). All system credentials are governed under Zero-Trust RBAC and encrypted vaults, never exposed in plain text during normal operations."
+  }
+]

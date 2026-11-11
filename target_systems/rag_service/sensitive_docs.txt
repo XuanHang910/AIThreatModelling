@@ -1,2 +1,4 @@
 Secret API Key: 12345-ABCDE
 Admin Password: super_secret_password
+Database Token: db_prod_tok_88412_corp
+Root Secret: corp_vault_master_2026
