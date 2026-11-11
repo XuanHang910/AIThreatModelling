@@ -741,7 +741,6 @@ HTML_CONTENT = """
             <button class="tab-btn" onclick="switchTab('evasion')">🎯 2. Đối Kháng Vision (TV2)</button>
             <button class="tab-btn" onclick="switchTab('llm_rag')">💬 3. RAG & Guardrails (TV3 & TV5)</button>
             <button class="tab-btn" onclick="switchTab('privacy_poison')">🧪 4. Poisoning & Privacy (TV4)</button>
-            <button class="tab-btn" onclick="switchTab('defense_qna')">🎓 5. Hướng Dẫn Bảo Vệ (Q&A)</button>
         </div>
 
         <!-- TAB 1: OVERVIEW & THREAT MATRIX (TV1) -->
@@ -1069,38 +1068,6 @@ HTML_CONTENT = """
                         <strong>Đánh đổi Quyền riêng tư - Độ chính xác (Privacy-Utility Trade-off):</strong>
                         <p style="font-size:13px; margin-top:6px; color:var(--text-dark);">
                             Khi áp dụng Differential Privacy (cắt gradient từng mẫu + cộng nhiễu Gaussian), rủi ro rò rỉ thành viên giảm từ 65% về 51%, đổi lại độ chính xác kiểm thử trên tập dữ liệu sạch chỉ giảm nhẹ từ 96.6% về 91.8%.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 5: DEFENSE Q&A CHEAT SHEET (HỘI ĐỒNG BẢO VỆ) -->
-        <div id="tab-defense_qna" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">🎓 Bộ Câu Hỏi & Kịch Bản Phản Biện Hội Đồng (Examination Cheat-Sheet)</div>
-                </div>
-
-                <div style="display:flex; flex-direction:column; gap:16px;">
-                    <div style="background:#FFFFFF; border-radius:12px; padding:18px; border-left:6px solid var(--primary-accent);">
-                        <strong style="color:var(--primary-accent); font-size:15px;">Câu hỏi 1: Tại sao Adversarial Training kháng được PGD nhưng lại yếu trước Carlini-Wagner (C&W L2)?</strong>
-                        <p style="font-size:14px; margin-top:8px; line-height:1.5; color:var(--text-dark);">
-                            👉 <strong>Trả lời:</strong> PGD tối ưu hóa bị chặn theo chuẩn $L_\\infty$ (giới hạn biên độ tối đa trên mỗi pixel), trong khi Carlini-Wagner giải bài toán tối ưu phi tuyến chuẩn $L_2$ trực tiếp trên hàm khoảng cách. Thực nghiệm của nhóm chứng minh Adversarial Training với PGD không tự động khái quát hóa sang không gian nhiễu $L_2$, đòi hỏi doanh nghiệp phải áp dụng phòng thủ đa chuẩn nhiễu hoặc AutoAttack.
-                        </p>
-                    </div>
-
-                    <div style="background:#FFFFFF; border-radius:12px; padding:18px; border-left:6px solid var(--primary-accent);">
-                        <strong style="color:var(--primary-accent); font-size:15px;">Câu hỏi 2: Tại sao nhóm lại xây dựng Dual-Proxy Regex Guardrail thay vì gọi một LLM Guard thứ hai?</strong>
-                        <p style="font-size:14px; margin-top:8px; line-height:1.5; color:var(--text-dark);">
-                            👉 <strong>Trả lời:</strong> Do yêu cầu khắt khe về SLA và chi phí sản xuất. Gọi thêm một LLM Guard (như Llama-Guard) sẽ làm tăng độ trễ thêm 300 - 800 ms và tốn gấp đôi chi phí token API. Giải pháp Dual-Proxy Regex + Normalization của nhóm chỉ mất <strong>0.036 ms</strong> mà vẫn chặn triệt để 100% các biến thể mã hóa Base64 và ký tự ẩn.
-                        </p>
-                    </div>
-
-                    <div style="background:#FFFFFF; border-radius:12px; padding:18px; border-left:6px solid var(--primary-accent);">
-                        <strong style="color:var(--primary-accent); font-size:15px;">Câu hỏi 3: Tại sao Isolation Forest mất dần tác dụng khi tỷ lệ đầu độc lên mức 5%?</strong>
-                        <p style="font-size:14px; margin-top:8px; line-height:1.5; color:var(--text-dark);">
-                            👉 <strong>Trả lời:</strong> Vì khi tỷ lệ mẫu độc chiếm 5% toàn bộ tập huấn luyện, nó đã chiếm tới gần 50% số mẫu của riêng lớp mục tiêu (chữ số 7). Lúc này các mẫu độc hại không còn là điểm ngoại lai (outlier) cô lập mà đã hình thành một cụm phân phối dày đặc. Do đó, nhóm đã mở rộng nghiên cứu sang phương pháp <strong>Spectral Signatures</strong> phân tích phổ ma trận hiệp phương sai.
                         </p>
                     </div>
                 </div>

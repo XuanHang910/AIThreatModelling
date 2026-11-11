@@ -1,5 +1,5 @@
 # Báo cáo Kiểm toán và Đánh giá An toàn Hệ thống AI (Tổng hợp Toàn diện)
-> **Thời gian xuất báo cáo:** 2026-11-09 20:34:26  
+> **Thời gian xuất báo cáo:** 2026-11-11 22:57:16  
 > **Chủ trì tổng hợp:** Thành viên 1 - Trưởng nhóm & Kiến trúc sư An toàn AI (Lead AI Security Architect)  
 > **Mục tiêu hệ thống:** Phân loại ảnh / Bảng (`target_systems/classifier`) & Dịch vụ RAG Doanh nghiệp (`target_systems/rag_service`).
 
