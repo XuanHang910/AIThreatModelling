@@ -235,17 +235,6 @@ async def evasion_test(req: EvasionRequest):
         prob_clean_adv = F.softmax(out_clean_adv, dim=1).numpy()[0]
         prob_robust_adv = F.softmax(out_robust_adv, dim=1).numpy()[0]
 
-    # Convert 28x28 images to base64 grayscale PNG for live browser rendering
-    def arr_to_svg(arr28):
-        # Generate inline SVG
-        lines = []
-        for r in range(28):
-            for c in range(28):
-                v = int(np.clip(arr28[0, 0, r, c], 0, 1) * 255)
-                if v > 15:
-                    lines.append(f'<rect x="{c*8}" y="{r*8}" width="8" height="8" fill="rgb({v},{v},{v})"/>')
-        return f'<svg viewBox="0 0 224 224" width="160" height="160" style="background:#0a0a0a; border-radius:8px;">{"".join(lines)}</svg>'
-
     pred_clean_orig = int(prob_clean_orig.argmax())
     pred_clean_adv = int(prob_clean_adv.argmax())
     pred_robust_adv = int(prob_robust_adv.argmax())
@@ -260,9 +249,62 @@ async def evasion_test(req: EvasionRequest):
         "conf_adversarial": round(float(prob_clean_adv[pred_clean_adv]) * 100, 1),
         "pred_robust": pred_robust_adv,
         "conf_robust": round(float(prob_robust_adv[pred_robust_adv]) * 100, 1),
-        "img_original": arr_to_svg(x),
-        "img_adv": arr_to_svg(x_adv),
-        "img_diff": arr_to_svg(np.abs(x_adv - x) / (eps + 1e-5))
+        "img_original": arr_to_svg(x, 160),
+        "img_adv": arr_to_svg(x_adv, 160),
+        "img_diff": arr_to_svg(np.abs(x_adv - x) / (eps + 1e-5), 160)
+    }
+
+def arr_to_svg(arr28, size=140):
+    lines = []
+    for r in range(28):
+        for c in range(28):
+            v = int(np.clip(arr28[0, 0, r, c], 0, 1) * 255)
+            if v > 15:
+                lines.append(f'<rect x="{c*8}" y="{r*8}" width="8" height="8" fill="rgb({v},{v},{v})"/>')
+    return f'<svg viewBox="0 0 224 224" width="{size}" height="{size}" style="background:#0a0a0a; border-radius:8px;">{"".join(lines)}</svg>'
+
+@app.get("/api/backdoor_preview")
+async def backdoor_preview(digit: int = 7):
+    x = get_sample_digit(digit)
+    x_trig = x.copy()
+    # Apply 6x6 clean-label backdoor trigger (margin=1, size=6, value=1.0)
+    x_trig[..., -7:-1, -7:-1] = 1.0
+    return {
+        "digit": digit,
+        "img_clean": arr_to_svg(x),
+        "img_triggered": arr_to_svg(x_trig)
+    }
+
+@app.get("/api/dashboard_data")
+async def get_dashboard_data():
+    def read_json(rel_path):
+        p = os.path.join(ROOT_DIR, rel_path)
+        if os.path.exists(p):
+            try:
+                with open(p, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                return {}
+        return {}
+
+    audit_raw = read_json("shared_logging/audit_results.json")
+    audit_map = {}
+    if isinstance(audit_raw, list):
+        for item in audit_raw:
+            audit_map[f"{item.get('module')}__{item.get('metric')}"] = item
+
+    return {
+        "threat_matrix": read_json("member_modules/member1_lead_threat_model/threat_matrix.json"),
+        "audit": audit_map,
+        "evasion": read_json("member_modules/member2_adversarial_evasion/results/evasion_results.json"),
+        "defense": read_json("member_modules/member2_adversarial_evasion/results/defense_results.json"),
+        "cw_vs_pgd": read_json("member_modules/member2_adversarial_evasion/results/cw_vs_pgd_results.json"),
+        "cross_test": read_json("member_modules/member3_llm_security/results_cross_testing/cross_test_results.json"),
+        "poisoning": read_json("member_modules/member4_poisoning_privacy/results/poisoning.json"),
+        "sanitization": read_json("member_modules/member4_poisoning_privacy/results/sanitization.json"),
+        "activation": read_json("member_modules/member4_poisoning_privacy/results/activation_defense.json"),
+        "privacy": read_json("member_modules/member4_poisoning_privacy/results/privacy_defense.json"),
+        "guardrails": read_json("member_modules/member5_guardrails_ops/results/guardrail_results.json"),
     }
 
 @app.post("/api/generate_report")
@@ -728,7 +770,10 @@ HTML_CONTENT = """
                 <h1>Nghiên cứu & Đánh giá An toàn Hệ thống AI Doanh nghiệp</h1>
                 <p>Khung kiểm toán đa tầng tích hợp STRIDE, MITRE ATLAS và OWASP LLM Top 10. Đánh giá tính bền vững đối kháng (Adversarial Robustness), rò rỉ dữ liệu RAG, đầu độc chuỗi cung ứng (Backdoor) và kiến trúc Guardrails thời gian thực.</p>
             </div>
-            <div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn" style="background:rgba(255,255,255,0.18); color:#FFFFFF; border:1px solid rgba(255,255,255,0.4);" onclick="loadDashboardData()">
+                    🔄 Làm Mới Số Liệu JSON
+                </button>
                 <button class="btn" style="background:#FFFFFF; color:var(--primary-accent);" onclick="generateReport()">
                     📄 Xuất Báo Cáo Nghiệm Thu
                 </button>
@@ -737,10 +782,10 @@ HTML_CONTENT = """
 
         <!-- NAVIGATION TABS -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('overview')">📊 1. Ma Trận Đe Dọa (TV1)</button>
-            <button class="tab-btn" onclick="switchTab('evasion')">🎯 2. Đối Kháng Vision (TV2)</button>
-            <button class="tab-btn" onclick="switchTab('llm_rag')">💬 3. RAG & Guardrails (TV3 & TV5)</button>
-            <button class="tab-btn" onclick="switchTab('privacy_poison')">🧪 4. Poisoning & Privacy (TV4)</button>
+            <button class="tab-btn active" onclick="switchTab('overview', this)">📊 1. Ma Trận Đe Dọa (TV1)</button>
+            <button class="tab-btn" onclick="switchTab('evasion', this)">🎯 2. Đối Kháng Vision (TV2)</button>
+            <button class="tab-btn" onclick="switchTab('llm_rag', this)">💬 3. RAG & Guardrails (TV3 & TV5)</button>
+            <button class="tab-btn" onclick="switchTab('privacy_poison', this)">🧪 4. Poisoning & Privacy (TV4)</button>
         </div>
 
         <!-- TAB 1: OVERVIEW & THREAT MATRIX (TV1) -->
@@ -748,44 +793,38 @@ HTML_CONTENT = """
             <div class="grid-4" style="margin-bottom:24px;">
                 <div class="metric-box">
                     <div class="metric-label">Clean Accuracy Ban Đầu</div>
-                    <div class="metric-value">98.5%</div>
-                    <div class="metric-sub">SimpleCNN Classifier (MNIST)</div>
+                    <div class="metric-value" id="kpi-clean-acc">...</div>
+                    <div class="metric-sub" id="kpi-clean-sub">Đang đọc evasion_results.json...</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Tỷ lệ rò rỉ RAG (No Guard)</div>
-                    <div class="metric-value">66.7%</div>
-                    <div class="metric-sub">Lỗ hổng Prompt Injection (TV3)</div>
+                    <div class="metric-value" id="kpi-rag-leak">...</div>
+                    <div class="metric-sub">Đọc từ audit_results.json (TV3)</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Rò rỉ sau Guardrail v2</div>
-                    <div class="metric-value" style="color:#1b5e20;">0.0%</div>
-                    <div class="metric-sub">Triệt tiêu rò rỉ 100% (TV5)</div>
+                    <div class="metric-value" id="kpi-guard-leak" style="color:#1b5e20;">...</div>
+                    <div class="metric-sub">Đọc từ guardrail_results.json (TV5)</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Độ trễ Guardrail Overhead</div>
-                    <div class="metric-value" style="color:#0d47a1;">0.036 ms</div>
-                    <div class="metric-sub">Đáp ứng tối đa SLA sản xuất</div>
+                    <div class="metric-value" id="kpi-guard-latency" style="color:#0d47a1;">...</div>
+                    <div class="metric-sub">Độ trễ đo thực tế (vào + ra)</div>
                 </div>
             </div>
 
             <div class="grid-2">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">🗺️ Ma trận STRIDE & MITRE ATLAS</div>
+                        <div class="card-title">🗺️ Ma trận STRIDE & MITRE ATLAS (Live JSON)</div>
                     </div>
                     <div style="overflow-x:auto;">
                         <table>
                             <thead>
-                                <tr><th>Khung</th><th>Mã Kỹ thuật</th><th>Mô tả / Rủi ro cốt lõi</th></tr>
+                                <tr><th>Khung</th><th>Mã / Mối đe dọa</th><th>Mô tả / Rủi ro cốt lõi</th></tr>
                             </thead>
-                            <tbody>
-                                <tr><td><strong>STRIDE</strong></td><td>Tampering / Evasion</td><td>Can thiệp nhiễu đối kháng cấp pixel làm sai lệch quyết định phân loại</td></tr>
-                                <tr><td><strong>STRIDE</strong></td><td>Info Disclosure</td><td>Trích xuất dữ liệu nhạy cảm qua Prompt Injection và suy diễn thành viên (MIA)</td></tr>
-                                <tr><td><strong>MITRE ATLAS</strong></td><td><code>AML.T0015</code></td><td>Evade ML Model (Né tránh phân loại bằng FGSM, PGD, Carlini-Wagner)</td></tr>
-                                <tr><td><strong>MITRE ATLAS</strong></td><td><code>AML.T0018</code></td><td>Backdoor Poisoning (Đầu độc tập huấn luyện bằng Clean-label Backdoor)</td></tr>
-                                <tr><td><strong>MITRE ATLAS</strong></td><td><code>AML.T0024</code></td><td>Exfiltration via ML Inference (Suy diễn thành viên qua loss phân phối)</td></tr>
-                                <tr><td><strong>OWASP Top 10</strong></td><td><code>LLM01</code></td><td>Prompt Injection (Instruction Override & Jailbreak)</td></tr>
-                                <tr><td><strong>OWASP Top 10</strong></td><td><code>LLM06</code></td><td>Sensitive Information Disclosure (Rò rỉ API Key & Password từ RAG)</td></tr>
+                            <tbody id="threat-matrix-body">
+                                <tr><td colspan="3">Đang tải từ threat_matrix.json...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -793,44 +832,15 @@ HTML_CONTENT = """
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">📈 Bảng Nghiệm Thu 4 Chiều (Red Team vs Blue Team)</div>
+                        <div class="card-title">📈 Bảng Nghiệm Thu 4 Chiều (Live JSON)</div>
                     </div>
                     <div style="overflow-x:auto;">
                         <table>
                             <thead>
                                 <tr><th>Chuyên đề</th><th>Tấn công (Red Team)</th><th>Phòng thủ (Blue Team)</th><th>Trạng thái</th></tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>TV2: Evasion</strong></td>
-                                    <td>PGD Acc tụt về <strong>0.7%</strong></td>
-                                    <td>Adversarial Training -> <strong>68.6%</strong></td>
-                                    <td><span style="color:#1b5e20; font-weight:700;">Đạt Chuẩn</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TV3: LLM Sec</strong></td>
-                                    <td>Leakage Rate: <strong>66.7%</strong></td>
-                                    <td>Chuyển giao yêu cầu cho TV5</td>
-                                    <td><span style="color:#b71c1c; font-weight:700;">Phát hiện bug</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TV3 ⚔️ TV5</strong></td>
-                                    <td>7 Bypass Payloads mới</td>
-                                    <td>Guardrail v2 Chặn <strong>100%</strong></td>
-                                    <td><span style="color:#1b5e20; font-weight:700;">Triệt để</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TV4: Poison/Priv</strong></td>
-                                    <td>Backdoor ASR: <strong>85.0%</strong></td>
-                                    <td>Spectral Signatures & DP-SGD</td>
-                                    <td><span style="color:#1b5e20; font-weight:700;">Đạt Chuẩn</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TV5: Guardrails</strong></td>
-                                    <td>Bắn phá Prompt Injection</td>
-                                    <td>Dual Proxy: Leakage <strong>0.0%</strong></td>
-                                    <td><span style="color:#1b5e20; font-weight:700;">Xuất Sắc</span></td>
-                                </tr>
+                            <tbody id="audit-summary-body">
+                                <tr><td colspan="4">Đang đồng bộ dữ liệu thực nghiệm...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -846,12 +856,18 @@ HTML_CONTENT = """
                         <div class="card-title">🎛️ Bảng Điều Khiển Tấn Công Đối Kháng</div>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Chọn chữ số mục tiêu kiểm thử:</label>
+                        <label class="input-label">Chọn chữ số mục tiêu kiểm thử (MNIST Thật):</label>
                         <select id="evasion-digit">
                             <option value="7">Chữ số 7 (Mục tiêu chính của Backdoor & Evasion)</option>
                             <option value="0">Chữ số 0</option>
                             <option value="1">Chữ số 1</option>
+                            <option value="2">Chữ số 2</option>
                             <option value="3">Chữ số 3</option>
+                            <option value="4">Chữ số 4</option>
+                            <option value="5">Chữ số 5</option>
+                            <option value="6">Chữ số 6</option>
+                            <option value="8">Chữ số 8</option>
+                            <option value="9">Chữ số 9</option>
                         </select>
                     </div>
 
@@ -1004,72 +1020,76 @@ HTML_CONTENT = """
             <div class="grid-2">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">🧪 Đầu Độc Backdoor & Phòng Thủ Lọc Dữ Liệu</div>
+                        <div class="card-title">🧪 Đầu Độc Backdoor & Phòng Thủ (Live JSON)</div>
                     </div>
-                    <div style="font-size:14px; line-height:1.6; margin-bottom:16px;">
-                        <strong>Tấn công Clean-Label Backdoor:</strong> Kẻ tấn công cấy trigger sáng 6x6 pixel vào ảnh thuộc lớp mục tiêu (chữ số 7) và giữ nguyên nhãn nhằm qua mặt quá trình kiểm tra thủ công. Tỷ lệ tấn công thành công tự nhiên (ASR) đạt <strong>85.0%</strong>.
+                    <div id="poison-summary-text" style="font-size:14px; line-height:1.6; margin-bottom:16px;">
+                        Đang nạp dữ liệu thực nghiệm từ poisoning.json & activation_defense.json...
                     </div>
 
                     <table>
                         <thead>
                             <tr><th>Phương Pháp Phòng Thủ</th><th>Tỷ Lệ Bóc Tách Mẫu Độc</th><th>ASR Sau Lọc</th><th>Độ Chính Xác Sạch</th></tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Chưa lọc (Baseline)</strong></td>
-                                <td>0.0%</td>
-                                <td style="color:#b71c1c; font-weight:700;">85.0%</td>
-                                <td>97.5%</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Isolation Forest</strong> (5% nhiễm)</td>
-                                <td>11.9% (Bị bão hòa)</td>
-                                <td>35.1%</td>
-                                <td>96.4%</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Spectral Signatures</strong> (Top 30%)</td>
-                                <td><strong style="color:#1b5e20;">26.5%</strong></td>
-                                <td><strong>31.1%</strong></td>
-                                <td>96.6%</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Activation Clustering</strong></td>
-                                <td>Phân cụm biểu diễn fc1</td>
-                                <td>Kháng bão hòa</td>
-                                <td>96.7%</td>
-                            </tr>
+                        <tbody id="poison-table-body">
+                            <tr><td colspan="4">Đang tải...</td></tr>
                         </tbody>
                     </table>
+
+                    <!-- Interactive Live Backdoor Trigger 6x6 Preview -->
+                    <div style="margin-top:20px; background:rgba(255,255,255,0.65); border-radius:14px; padding:16px; border:1px solid rgba(89,9,7,0.15);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <strong style="color:var(--primary-accent); font-size:14px;">🔍 Minh họa trực tiếp Trigger Backdoor 6&times;6 trên MNIST thật:</strong>
+                            <select id="backdoor-digit" style="width:auto; padding:6px 12px;" onchange="loadBackdoorPreview()">
+                                <option value="7">Chữ số 7</option>
+                                <option value="0">Chữ số 0</option>
+                                <option value="1">Chữ số 1</option>
+                                <option value="3">Chữ số 3</option>
+                                <option value="8">Chữ số 8</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; justify-content:space-around; text-align:center;">
+                            <div>
+                                <div id="bd-img-clean"></div>
+                                <span style="font-size:12px; font-weight:600; color:var(--text-dark); display:block; margin-top:4px;">Ảnh Sạch Gốc</span>
+                            </div>
+                            <div style="display:flex; align-items:center; font-size:20px; font-weight:700; color:var(--primary-accent);">&rarr;</div>
+                            <div>
+                                <div id="bd-img-trig"></div>
+                                <span style="font-size:12px; font-weight:600; color:#b71c1c; display:block; margin-top:4px;">Cấy Trigger 6&times;6 (Clean-Label)</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">🔒 Đánh Giá Rò Rỉ Quyền Riêng Tư (MIA vs DP-SGD)</div>
+                        <div class="card-title">🔒 Rò Rỉ Quyền Riêng Tư: MIA vs DP-SGD (Live JSON)</div>
                     </div>
                     <div style="font-size:14px; line-height:1.6; margin-bottom:16px;">
-                        <strong>Tấn công suy diễn thành viên (Membership Inference Attack - MIA):</strong> Lợi dụng việc mô hình ghi nhớ (overfitting) dữ liệu huấn luyện, kẻ tấn công so sánh loss phân phối để đoán dữ liệu nhạy cảm có thuộc tập huấn luyện hay không.
+                        <strong>Tấn công suy diễn thành viên (Membership Inference Attack - MIA):</strong> Kẻ tấn công khai thác sự ghi nhớ dữ liệu của mô hình (overfitting) thông qua loss phân phối để đoán xem một mẫu dữ liệu nhạy cảm có nằm trong tập huấn luyện hay không (mức đoán mò ngẫu nhiên = 50.0%).
                     </div>
 
                     <div class="grid-2" style="margin-bottom:16px;">
                         <div class="metric-box">
                             <div class="metric-label">MIA Accuracy (Chưa bảo vệ)</div>
-                            <div class="metric-value" style="color:#b71c1c;">65.0%</div>
-                            <div class="metric-sub">Vượt xa mức đoán mò ngẫu nhiên (50%)</div>
+                            <div class="metric-value" id="priv-mia-none" style="color:#b71c1c;">...</div>
+                            <div class="metric-sub" id="priv-acc-none">Đang đọc privacy_defense.json...</div>
                         </div>
                         <div class="metric-box">
                             <div class="metric-label">MIA Sau DP-SGD (&sigma;=1.0)</div>
-                            <div class="metric-value" style="color:#1b5e20;">51.0%</div>
-                            <div class="metric-sub">Tiệm cận tuyệt đối mức đoán ngẫu nhiên</div>
+                            <div class="metric-value" id="priv-mia-dp" style="color:#1b5e20;">...</div>
+                            <div class="metric-sub" id="priv-acc-dp">Đang đọc privacy_defense.json...</div>
                         </div>
                     </div>
 
-                    <div style="background:rgba(255,255,255,0.7); border-radius:12px; padding:16px;">
-                        <strong>Đánh đổi Quyền riêng tư - Độ chính xác (Privacy-Utility Trade-off):</strong>
-                        <p style="font-size:13px; margin-top:6px; color:var(--text-dark);">
-                            Khi áp dụng Differential Privacy (cắt gradient từng mẫu + cộng nhiễu Gaussian), rủi ro rò rỉ thành viên giảm từ 65% về 51%, đổi lại độ chính xác kiểm thử trên tập dữ liệu sạch chỉ giảm nhẹ từ 96.6% về 91.8%.
-                        </p>
-                    </div>
+                    <table>
+                        <thead>
+                            <tr><th>Cấu hình Phòng thủ</th><th>MIA Accuracy</th><th>MIA AUC</th><th>Test Accuracy (Utility)</th></tr>
+                        </thead>
+                        <tbody id="privacy-table-body">
+                            <tr><td colspan="4">Đang tải...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1089,13 +1109,192 @@ HTML_CONTENT = """
     </div>
 
     <script>
-        function switchTab(tabId) {
+        function switchTab(tabId, btnEl) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById('tab-' + tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (btnEl) btnEl.classList.add('active');
         }
+
+        function pct(v) {
+            if (v === undefined || v === null) return 'N/A';
+            return (v * 100).toFixed(1) + '%';
+        }
+
+        async function loadBackdoorPreview() {
+            const digit = parseInt(document.getElementById('backdoor-digit').value);
+            try {
+                const res = await fetch('/api/backdoor_preview?digit=' + digit);
+                const data = await res.json();
+                document.getElementById('bd-img-clean').innerHTML = data.img_clean;
+                document.getElementById('bd-img-trig').innerHTML = data.img_triggered;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadDashboardData() {
+            try {
+                const res = await fetch('/api/dashboard_data');
+                const d = await res.json();
+                const audit = d.audit || {};
+
+                // 1. Update Top KPIs
+                const cleanAcc = d.evasion?.clean_accuracy ?? audit['member2_evasion__clean_accuracy']?.value;
+                document.getElementById('kpi-clean-acc').innerText = pct(cleanAcc);
+                document.getElementById('kpi-clean-sub').innerText = `SimpleCNN (${d.evasion?.dataset || 'MNIST'}, n=${d.evasion?.n_test || 1000})`;
+
+                const ragLeak = audit['member3_llm__data_leakage_rate']?.value;
+                document.getElementById('kpi-rag-leak').innerText = pct(ragLeak);
+
+                const guardLeak = d.guardrails?.summary?.full_std?.leak_rate ?? audit['member5_guardrails__leakage_rate_input_output_filter']?.value;
+                document.getElementById('kpi-guard-leak').innerText = pct(guardLeak);
+
+                const latMs = d.guardrails?.latency?.overhead_ms ?? audit['member5_guardrails__latency_ms']?.value;
+                document.getElementById('kpi-guard-latency').innerText = (latMs !== undefined && latMs !== null) ? latMs.toFixed(4) + ' ms' : 'N/A';
+
+                // 2. Populate Threat Matrix
+                const tmBody = document.getElementById('threat-matrix-body');
+                const tm = d.threat_matrix || {};
+                let tmRows = '';
+                (tm.STRIDE || []).forEach(s => {
+                    tmRows += `<tr><td><strong>STRIDE</strong></td><td>${s.threat}</td><td>${s.description}</td></tr>`;
+                });
+                (tm.MITRE_ATLAS || []).forEach(m => {
+                    tmRows += `<tr><td><strong>MITRE ATLAS</strong></td><td><code>${m.technique}</code></td><td>${m.name}</td></tr>`;
+                });
+                (tm.OWASP_LLM_TOP_10 || []).forEach(o => {
+                    tmRows += `<tr><td><strong>OWASP Top 10</strong></td><td><code>${o.id}</code></td><td>${o.name}</td></tr>`;
+                });
+                tmBody.innerHTML = tmRows || '<tr><td colspan="3">Không có dữ liệu threat_matrix.json</td></tr>';
+
+                // 3. Populate Audit Summary Table (TV2, TV3, TV3xTV5, TV4, TV5)
+                const pgdBefore = d.evasion?.pgd?.['0.3'] ?? audit['member2_evasion__accuracy_pgd_eps_0.3']?.value;
+                const pgdAfter = d.defense?.pgd?.['0.3'] ?? audit['member2_defense__accuracy_pgd_eps_0.3_after_defense']?.value;
+                const cwRobustAcc = d.cw_vs_pgd?.models?.robust?.cw_l2?.robust_accuracy;
+
+                const crossBypass = d.cross_test?.summary?.new_bypass?.input_bypass_rate ?? audit['member3_cross_testing__input_bypass_rate']?.value;
+                const crossBlock = d.cross_test?.summary?.new_bypass?.input_block_rate ?? audit['member3_cross_testing__block_rate']?.value;
+                const crossLeak = d.cross_test?.summary?.new_bypass?.full_pipeline_leak_rate ?? audit['member3_cross_testing__full_pipeline_leakage_rate']?.value;
+
+                // Poisoning & Privacy values from TV4's real JSONs
+                const poisonAdv5 = (d.poisoning?.results?.adversarial || []).find(r => r.poison_rate === 0.05);
+                const asrPoison = poisonAdv5?.asr_mean;
+                const spectral30 = (d.activation?.rows || []).find(r => r.method === 'spectral_0.30');
+
+                const privNone = (d.privacy?.rows || []).find(r => r.variant === 'none');
+                const privDp = (d.privacy?.rows || []).find(r => r.variant === 'dp_sigma1.0');
+
+                const guardBlock = d.guardrails?.summary?.input_std?.block_rate ?? audit['member5_guardrails__block_rate']?.value;
+
+                document.getElementById('audit-summary-body').innerHTML = `
+                    <tr>
+                        <td><strong>TV2: Evasion</strong></td>
+                        <td>PGD (ε=0.3) tụt về <strong>${pct(pgdBefore)}</strong></td>
+                        <td>Adv Training: PGD <strong>${pct(pgdAfter)}</strong>${cwRobustAcc !== undefined ? ' | C&W: ' + pct(cwRobustAcc) : ''}</td>
+                        <td><span style="color:#1b5e20; font-weight:700;">Đạt Chuẩn</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>TV3: LLM Sec</strong></td>
+                        <td>Leakage Rate: <strong>${pct(ragLeak)}</strong></td>
+                        <td>Chuyển giao yêu cầu cho TV5</td>
+                        <td><span style="color:#b71c1c; font-weight:700;">Phát hiện bug</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>TV3 ⚔️ TV5</strong></td>
+                        <td>7 Bypass Probes (Bypass: <strong>${pct(crossBypass)}</strong>)</td>
+                        <td>Guardrail v2 Chặn <strong>${pct(crossBlock)}</strong> | Leak: <strong>${pct(crossLeak)}</strong></td>
+                        <td><span style="color:#1b5e20; font-weight:700;">Triệt để</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>TV4: Poison/Priv</strong></td>
+                        <td>Backdoor ASR: <strong>${pct(asrPoison)}</strong> | MIA: <strong>${pct(privNone?.mia_accuracy)}</strong></td>
+                        <td>Spectral: <strong>${pct(spectral30?.detection_rate)}</strong> | DP-SGD MIA: <strong>${pct(privDp?.mia_accuracy)}</strong></td>
+                        <td><span style="color:#1b5e20; font-weight:700;">Đạt Chuẩn</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>TV5: Guardrails</strong></td>
+                        <td>Leakage (No Guard): <strong>${pct(d.guardrails?.summary?.none?.leak_rate)}</strong></td>
+                        <td>Block: <strong>${pct(guardBlock)}</strong> | Leak: <strong>${pct(guardLeak)}</strong></td>
+                        <td><span style="color:#1b5e20; font-weight:700;">Xuất Sắc</span></td>
+                    </tr>
+                `;
+
+                // 4. Populate Tab 4 (Poisoning & Privacy) dynamically from real JSONs
+                const baseCleanAcc = d.poisoning?.baseline?.clean_accuracy_mean;
+                const baseAsr = d.poisoning?.baseline?.asr_mean;
+                document.getElementById('poison-summary-text').innerHTML = `
+                    <strong>Tấn công Clean-Label Backdoor (MNIST, Lớp mục tiêu ${d.poisoning?.target_class ?? 7}, 5% nhiễm độc):</strong> 
+                    Kẻ tấn công làm nhiễu đối kháng PGD (&epsilon;=${d.poisoning?.pgd_eps ?? 0.3}) rồi cấy trigger 6&times;6 vào ảnh lớp mục tiêu nhưng vẫn giữ nguyên nhãn đúng, khiến tỷ lệ tấn công thành công (ASR) tăng từ <strong>${pct(baseAsr)}</strong> lên <strong>${pct(asrPoison)}</strong>.
+                `;
+
+                const sanHead = (d.sanitization?.rows || []).find(r => r.method === 'reference' && r.level === 0.1);
+                const san20 = (d.sanitization?.rows || []).find(r => r.method === 'reference' && r.level === 0.2);
+                const actSize = (d.activation?.rows || []).find(r => r.method === 'activation_clustering_size');
+
+                document.getElementById('poison-table-body').innerHTML = `
+                    <tr>
+                        <td><strong>Chưa lọc (Baseline 5% Poison)</strong></td>
+                        <td>0.0%</td>
+                        <td style="color:#b71c1c; font-weight:700;">${pct(asrPoison)}</td>
+                        <td>${pct(poisonAdv5?.clean_accuracy_mean)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isolation Forest</strong> (Ref, level=0.10)</td>
+                        <td>${pct(sanHead?.detection_rate)}</td>
+                        <td>${pct(sanHead?.asr_after)}</td>
+                        <td>${pct(sanHead?.clean_acc_after)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isolation Forest</strong> (Ref, level=0.20)</td>
+                        <td><strong style="color:#1b5e20;">${pct(san20?.detection_rate)}</strong></td>
+                        <td><strong style="color:#1b5e20;">${pct(san20?.asr_after)}</strong></td>
+                        <td>${pct(san20?.clean_acc_after)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spectral Signatures</strong> (Top 30%/lớp)</td>
+                        <td><strong style="color:#1b5e20;">${pct(spectral30?.detection_rate)}</strong></td>
+                        <td>${pct(spectral30?.asr_after)}</td>
+                        <td>${pct(spectral30?.clean_acc_after)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activation Clustering</strong> (Size rule)</td>
+                        <td>${pct(actSize?.detection_rate)} (Bão hòa 47.8%)</td>
+                        <td>${pct(actSize?.asr_after)}</td>
+                        <td>${pct(actSize?.clean_acc_after)}</td>
+                    </tr>
+                `;
+
+                // Privacy metrics
+                document.getElementById('priv-mia-none').innerText = pct(privNone?.mia_accuracy);
+                document.getElementById('priv-acc-none').innerText = `Test Acc (Utility): ${pct(privNone?.test_acc)} | Train Acc: ${pct(privNone?.train_acc)}`;
+
+                document.getElementById('priv-mia-dp').innerText = pct(privDp?.mia_accuracy);
+                document.getElementById('priv-acc-dp').innerText = `Test Acc (Utility): ${pct(privDp?.test_acc)} (Privacy-Utility Trade-off)`;
+
+                let privRows = '';
+                (d.privacy?.rows || []).forEach(r => {
+                    privRows += `
+                        <tr>
+                            <td><strong>${r.variant}</strong></td>
+                            <td style="font-weight:700; color:${r.mia_accuracy < 0.54 ? '#1b5e20' : '#b71c1c'};">${pct(r.mia_accuracy)}</td>
+                            <td>${(r.mia_auc || 0).toFixed(3)}</td>
+                            <td>${pct(r.test_acc)}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('privacy-table-body').innerHTML = privRows;
+
+            } catch (err) {
+                console.error("Failed loading dashboard data:", err);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+            loadBackdoorPreview();
+        });
 
         async function sendChatMessage() {
             const input = document.getElementById('chat-input');

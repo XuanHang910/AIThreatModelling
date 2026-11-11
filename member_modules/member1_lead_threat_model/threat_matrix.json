@@ -1,11 +1,16 @@
 {
     "STRIDE": [
-        {"threat": "Spoofing", "description": "Attacker impersonates a valid user"}
+        {"threat": "Spoofing", "description": "Kẻ tấn công giả mạo danh tính hoặc vượt qua xác thực câu lệnh"},
+        {"threat": "Tampering", "description": "Can thiệp nhiễu đối kháng cấp pixel hoặc đầu độc tập dữ liệu huấn luyện (Backdoor)"},
+        {"threat": "Information Disclosure", "description": "Trích xuất tài liệu mật từ RAG qua Prompt Injection hoặc suy diễn thành viên (MIA)"}
     ],
     "MITRE_ATLAS": [
-        {"technique": "AML.T0001", "name": "Adversarial Examples"}
+        {"technique": "AML.T0015", "name": "Evade ML Model (FGSM, PGD, Carlini-Wagner L2)"},
+        {"technique": "AML.T0018", "name": "Backdoor ML Model (Clean-label Poisoning)"},
+        {"technique": "AML.T0024", "name": "Exfiltration via ML Inference API (Membership Inference Attack)"}
     ],
     "OWASP_LLM_TOP_10": [
-        {"id": "LLM01", "name": "Prompt Injection"}
+        {"id": "LLM01", "name": "Prompt Injection (Direct, Override, Base64, Zero-width, DAN)"},
+        {"id": "LLM06", "name": "Sensitive Information Disclosure (Rò rỉ API Key & Password từ RAG)"}
     ]
 }
