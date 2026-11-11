@@ -1365,6 +1365,11 @@ HTML_CONTENT = """
                 }
             } catch (err) {
                 console.error(err);
+                const errMsg = document.createElement('div');
+                errMsg.className = 'chat-msg bot blocked';
+                errMsg.innerText = '⚠️ Mất kết nối với máy chủ Backend (localhost:8000). Vui lòng mở Terminal và chạy lại lệnh: python app_demo.py';
+                stream.appendChild(errMsg);
+                stream.scrollTop = stream.scrollHeight;
             }
         }
 
