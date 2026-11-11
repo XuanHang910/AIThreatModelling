@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Enterprise AI Threat Modeling & Security Evaluation - Live Defense Dashboard
 Authors: Team 5 Members (Lead AI Security Architect, Evasion, LLM Security, Poisoning/Privacy, Guardrails)
