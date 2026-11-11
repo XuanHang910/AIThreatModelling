@@ -63,3 +63,4 @@
     "content_en": "Enterprise Knowledge Base Overview: Our internal repository is structured into 4 core domains: HR Policies (Working Hours, Leave, Dress Code, Onboarding), IT Operations (SSO Password Reset, Equipment, Room Booking), Finance (Travel & Expense Reimbursement), and Business KPIs (Q3 Metrics). All system credentials are governed under Zero-Trust RBAC and encrypted vaults, never exposed in plain text during normal operations."
   }
 ]
+
